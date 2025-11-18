@@ -9,27 +9,45 @@
 <body>
    
     <header>
-        <a href="{{ route('product.index') }}">
-            <img src="/img/logo-ine.png" title="logotipo" alt="logotipo" class="logo" />
-        </a>
+    <a href="{{ route('product.index') }}">
+        <img src="/img/logo-ine.png" title="logotipo" alt="logotipo" class="logo" />
+    </a>
 
-        <form name="search" class="form-search" action="{{ Route('product.index') }}" >
-            <input id="text" name="text" type="text" placeholder="Buscar..." value="{{ request()->get('text') }}">
-            <button>Buscar</button>
-        </form>
-        <div class="button-links">
-            <a href="#">Login</a>
-            <a href="#">Registro</a>
-            <a href="#"><img class="cart-ico" src="/img/cart.png" title="carrito" alt="carrito" /></a>
-        </div>
+    <form name="search" class="form-search" action="{{ route('product.index') }}">
+        <input id="text" name="text" type="text" placeholder="Buscar..." value="{{ request()->get('text') }}">
+        <button>Buscar</button>
+    </form>
 
-        <nav class="breadcrumbs">
-            <a href="{{ route('product.index') }}">Productos</a> &gt; {{ $product->name }}
-        </nav>
+    <div class="button-links">
+        @auth
+            <!-- Nombre del usuario con enlace al perfil -->
+            <a href="{{ route('profile.edit') }}">{{ Auth::user()->name }}</a>
 
-    </header>
+            <!-- Logout como formulario POST -->
+            <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        @else
+            <!-- Login y Registro si no hay sesión -->
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('register') }}">Registro</a>
+        @endauth
+
+        <!-- Carrito siempre visible -->
+        <a href="#"><img class="cart-ico" src="/img/cart.png" title="carrito" alt="carrito" /></a>
+    </div>
+
+    <nav class="breadcrumbs">
+        <a href="{{ route('product.index') }}">Productos</a> &gt; {{ $product->name }}
+    </nav>
+</header>
+
 
     <main>
+        @if (session('error'))
+            <div class="fielderror">{{ session('error') }}</div>
+        @endif
     <section class="product-detail">
         <h2>{{ $product->name }}</h2>
         <p>Empresa: {{ $product->company ? $product->company->name : 'Sin empresa' }}</p>
@@ -50,7 +68,14 @@
 
         <!-- Botón volver -->
         <a href="javascript:window.history.back()" class="button">Volver</a>
-        <a href="{{ route('product.edit', ['product' => $product]) }}" class="button">Editar</a>
+        @auth
+            @if(auth()->user()->isAdmin)
+                    <a href="{{ route('product.edit', ['product' => $product]) }}" class="btn btn-primary">
+                        Editar
+                    </a>
+            @endif
+        @endauth
+
     </section>
 </main>
 

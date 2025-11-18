@@ -20,24 +20,38 @@
     </form>
 
     <div class="button-links">
-        <a href="#">Login</a>
-        <a href="#">Registro</a>
+        @auth
+            <!-- Nombre del usuario con enlace al perfil -->
+            <a href="{{ route('profile.edit') }}">{{ Auth::user()->name }}</a>
+
+            <!-- Logout como formulario POST -->
+            <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        @else
+            <!-- Login y Registro si no hay sesión -->
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('register') }}">Registro</a>
+        @endauth
+
+        <!-- Carrito siempre visible -->
         <a href="#"><img class="cart-ico" src="/img/cart.png" title="carrito" alt="carrito" /></a>
     </div>
 
     <nav class="breadcrumbs">
-    <a href="{{ route('product.index') }}">Productos</a> &gt;
-    
-    @if ($product)
-        <a href="{{ route('product.show', ['product' => $product]) }}">
-            {{ $product->name }}
-        </a> &gt; edición
-    @else
-        Nuevo producto
-    @endif
-</nav>
+        <a href="{{ route('product.index') }}">Productos</a> &gt;
 
+        @if ($product)
+            <a href="{{ route('product.show', ['product' => $product]) }}">
+                {{ $product->name }}
+            </a> &gt; edición
+        @else
+            Nuevo producto
+        @endif
+    </nav>
 </header>
+
 
 <main>
     {{-- Mensaje de estado (éxito o error del controlador) --}}

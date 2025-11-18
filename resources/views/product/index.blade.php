@@ -9,25 +9,40 @@
 <body>
    
     <header>
-        <a href="{{ route('product.index') }}">
-            <img src="/img/logo-ine.png" title="logotipo" alt="logotipo" class="logo" />
-        </a> 
+    <a href="{{ route('product.index') }}">
+        <img src="/img/logo-ine.png" title="logotipo" alt="logotipo" class="logo" />
+    </a> 
 
-        <form name="search" class="form-search" action="{{ Route('product.index') }}" >
-            <input id="text" name="text" type="text" placeholder="Buscar..." value="{{ request()->get('text') }}">
-            <button>Buscar</button>
-        </form>
-        <div class="button-links">
-            <a href="#">Login</a>
-            <a href="#">Registro</a>
-            <a href="#"><img class="cart-ico" src="/img/cart.png" title="carrito" alt="carrito" /></a>
-        </div>
+    <form name="search" class="form-search" action="{{ route('product.index') }}">
+        <input id="text" name="text" type="text" placeholder="Buscar..." value="{{ request()->get('text') }}">
+        <button>Buscar</button>
+    </form>
 
-        <nav class="breadcrumbs">
-            <a>Productos<a>
-        </nav>
+    <div class="button-links">
+        @auth
+            <!-- Mostrar nombre del usuario con enlace al perfil -->
+            <a href="{{ route('profile.edit') }}">{{ Auth::user()->name }}</a>
 
-    </header>
+            <!-- Logout como formulario POST -->
+            <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        @else
+            <!-- Mostrar Login y Registro si no hay usuario autenticado -->
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('register') }}">Registro</a>
+        @endauth
+
+        <!-- Carrito siempre visible -->
+        <a href="#"><img class="cart-ico" src="/img/cart.png" title="carrito" alt="carrito" /></a>
+    </div>
+
+    <nav class="breadcrumbs">
+        <a href="{{ route('product.index') }}">Productos</a>
+    </nav>
+</header>
+
 
     <main>
 
