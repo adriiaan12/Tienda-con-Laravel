@@ -12,10 +12,10 @@ class Product extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public ProductModel $product)
-    {
-        //
-    }
+    public function __construct(
+        public ProductModel $product,    // objeto Product
+        public bool $bIndexOrShow = true // true = index, false = show
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

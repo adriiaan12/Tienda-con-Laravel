@@ -4,11 +4,16 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckRoleAdmin;
+use App\Http\Controllers\LocalizationController;
+
+
+
 
 Route::get('/', [ ProductController::class, 'index' ])->name('product.index');
 
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 
+Route::get('/lang/{sLang}', LocalizationController::class)->name('lang');
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');

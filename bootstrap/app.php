@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckRoleAdmin;
+use App\Http\Middleware\SetLocale;
 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -14,9 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-        
-        'isAdmin' => \App\Http\Middleware\CheckRoleAdmin::class,
-    ]);
+            'isAdmin' => \App\Http\Middleware\CheckRoleAdmin::class,
+        ]);
+        $middleware->web(append: [
+            SetLocale::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

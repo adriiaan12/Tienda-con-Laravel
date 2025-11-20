@@ -111,7 +111,7 @@
         </div>
 
         <button class="button" type="submit">Guardar</button>
-        <a href="javascript:window.history.back()" class="button">Cancelar</a>
+        <a href=" {{ route('product.show', ['product' => $product]) }} " class="button">Cancelar</a>
     </form>
 </main>
 
